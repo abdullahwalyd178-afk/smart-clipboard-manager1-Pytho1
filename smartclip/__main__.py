@@ -11,6 +11,13 @@ def main():
     from .monitor import ClipboardMonitor
     from .ui import HistoryWindow
     store=ClipboardStore(database_path(),RETENTION_SECONDS); store.cleanup()
+    cleanup_stop=threading.Event()
+    def cleanup_loop():
+        while not cleanup_stop.wait(600):
+            try: store.cleanup()
+            except Exception as exc: print(f"Cleanup failed: {exc}")
+    cleanup_thread=threading.Thread(target=cleanup_loop,name="retention-cleanup",daemon=True)
+    cleanup_thread.start()
     window=HistoryWindow(store); monitor=ClipboardMonitor(store); monitor.start()
     try:
         import pystray
@@ -30,5 +37,7 @@ def main():
         window.root.withdraw(); window.root.mainloop()
     except ImportError:
         window.root.mainloop()
-    finally: monitor.stop()
+    finally:
+        cleanup_stop.set(); cleanup_thread.join(timeout=5)
+        monitor.stop()
 if __name__=="__main__": main()
