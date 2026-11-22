@@ -1,5 +1,5 @@
 import sys
-KEY=r"Software\\Microsoft\\Windows\\CurrentVersion\\Run"
+KEY=r"Software\Microsoft\Windows\CurrentVersion\Run"
 NAME="SmartClipboardManager"
 def set_startup(enabled):
     if sys.platform!="win32": raise RuntimeError("Windows startup is only supported on Windows.")
