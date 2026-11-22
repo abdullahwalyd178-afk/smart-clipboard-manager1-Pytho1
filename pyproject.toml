@@ -6,7 +6,7 @@ name = "smart-clipboard-manager"
 version = "0.1.0"
 description = "Local clipboard history with OCR, pinning and expiry"
 requires-python = ">=3.10"
-dependencies = ["pyperclip>=1.8.2", "Pillow>=10.0.0", "pystray>=0.19.5"]
+dependencies = ["pyperclip>=1.8.2", "Pillow>=10.0.0", "pystray>=0.19.5", "pywin32>=306; sys_platform == 'win32'"]
 [project.scripts]
 smartclip = "smartclip.__main__:main"
 [tool.pytest.ini_options]
